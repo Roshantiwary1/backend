@@ -35,8 +35,27 @@ app.post("/api/v1/tours",(req,res)=>{
         })
     })
 
+})
 
-    res.send("done")
+app.get("/api/v1/tours/:id",(req,res)=>{
+    // console.log(req.params);
+
+    if(req.params.id*1 > tours.length){
+        res.status(404).json({
+            status:"fail",
+            message:"invalid ID"
+        })
+    }
+
+    const tour = tours.find(el=>el.id===req.params.id*1); //string multiplied by number gives a number
+    
+    res.status(200).json({
+        status:"success",
+        data:{
+            tour,
+        }
+    })
+    
 })
 
 app.listen(3000,()=>{
