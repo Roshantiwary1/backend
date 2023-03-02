@@ -1,0 +1,23 @@
+{
+  "name": "backend-development",
+  "version": "1.0.0",
+  "description": "",
+  "main": "creatingServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roshantiwary1/backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Roshantiwary1/backend/issues"
+  },
+  "homepage": "https://github.com/Roshantiwary1/backend#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
+  }
+}
