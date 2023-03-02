@@ -1,13 +1,19 @@
 const express = require("express");
-
+const fs = require("fs");
 const app = express();
 
-app.get("/",(req,res)=>{
-    res.status(200).json({message:"hello from the server" , app:"natour"})
-})
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
+//JSon.parse is to convert json into javascript object
+//json.stingify is to convert javascript object to json format
 
-app.post("/",(req,res)=>{
-    res.send("you can post to this end point")
+app.get("/api/v1/tours",(req,res)=>{
+    res.status(200).json({
+        status:"success",
+        results:tours.length,
+        data:{
+            tours,
+        }
+    })
 })
 
 app.listen(3000,()=>{
