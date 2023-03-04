@@ -6,6 +6,7 @@ const userRouter = require('./routers/userRoute.js')
 
 const app = express();
 
+//connection this app to atlas cluster
 mongoose.connect("mongodb+srv://Roshan:dTxl4HVG8iwJvGar@cluster0.sfawiac.mongodb.net/?retryWrites=true&w=majority",{
     useNewUrlParser:true,
     useCreateIndex:true,
@@ -13,6 +14,38 @@ mongoose.connect("mongodb+srv://Roshan:dTxl4HVG8iwJvGar@cluster0.sfawiac.mongodb
     useUnifiedTopology: true
 }).then(con=>console.log("database connected successfully"))
 
+// defining schema for the data
+
+const tourSchema = new mongoose.Schema({
+    name:{
+        type:String,
+        required:[true,"A tour must have a name"],
+        unique:true,
+    },
+    rating:{
+        type:Number,
+        min:1,
+        max:5,
+        default:4.5
+    },
+    price:{
+        type:Number,
+        required:[true,"A true must have Price"]
+    },
+})
+
+//creating a model from the schema
+const Tour = mongoose.model("Tour",tourSchema);
+
+//creating document from the model
+const testTour = new Tour({
+    name:"The Forest Hiker",
+    rating:4.7,
+    price:497
+})
+
+//saving the document to the database
+testTour.save().then(doc=>console.log(doc)).catch(err=>console.log(err))
 
 //1> middlewares
 
