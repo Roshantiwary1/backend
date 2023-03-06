@@ -8,8 +8,10 @@ const Tour = require("../model/tourModel.js")
 exports.getAllTours = async(req,res)=>{
 
     console.log(req.query)    
+    //BUILD THE QUERY
+
     const queryObj = {...req.query};
-    
+    //1A> FILTERING
     const excludedFeilds = ["sort","limit","fields","page"]
 
     excludedFeilds.forEach(el=>delete queryObj[el]);
@@ -19,10 +21,21 @@ exports.getAllTours = async(req,res)=>{
     //     difficulty:"easy"
     // });
 
-    const tours = await Tour.find(queryObj)
+    //1B> ADVANCED FILTERING
+    let queryStr = JSON.stringify(queryObj);//convert js object into so to replace lte,gte,gt,lt to $lte
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match=>`$${match}`)  //\b is to replace exact word with lt,gt.. g is to replace all of it
+    console.log(JSON.parse(queryStr))
 
+    //EXECUTE THE QUERY 
+    const query = Tour.find(JSON.parse(queryStr))
+    
+    const tours = await query
     // const tours = await Tour.find().where('duration').equals(5).where('difficulty').equals('easy')
 
+    //{difficulty:"easy" , duration:{$lte:5}} 
+    //{ difficulty: 'easy', duration:{ lte: '5' }}
+
+    //SEND RESPONSE
     res.status(200).json({
         status:"success",
         results:tours.length,
