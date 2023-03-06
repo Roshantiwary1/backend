@@ -26,8 +26,18 @@ exports.getAllTours = async(req,res)=>{
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match=>`$${match}`)  //\b is to replace exact word with lt,gt.. g is to replace all of it
     console.log(JSON.parse(queryStr))
 
+    let query = Tour.find(JSON.parse(queryStr))
+
+    //2) SORTING THE API DATA
+    if(req.query.sort){
+       const sortBy = req.query.sort.split(',').join(' ')
+        query = query.sort(sortBy)
+        //sort(price rating) to sort by more than one value
+    }else{
+        query = query.sort('-createdAt')
+    }
+
     //EXECUTE THE QUERY 
-    const query = Tour.find(JSON.parse(queryStr))
     
     const tours = await query
     // const tours = await Tour.find().where('duration').equals(5).where('difficulty').equals('easy')
